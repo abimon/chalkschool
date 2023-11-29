@@ -125,11 +125,11 @@ class StudentController extends Controller
         $response->setContent(json_encode(["C2BPaymentConfirmationResult" => "Success"]));
         return $response;
     }
-    function Pay($code)
+    function Pay($codec)
     {
         $phone = request()->contact;
         $amount=request()->amount;
-        $course= Student::where('course_code',$code)->where('user_id',Auth()->user()->id)->first();
+        $course= Student::where('course_code',$codec)->where('user_id',Auth()->user()->id)->first();
         $id = $course->id;
         $code = str_replace('+', '', substr('254', 0, 1)) . substr('254', 1);
         $originalStr = $phone;
@@ -149,8 +149,8 @@ class StudentController extends Controller
             'PartyB' => env('MPESA_SHORT_CODE'),
             'PhoneNumber' => $contact,
             'CallBackURL' => 'https://school.healthandlifecentre.com/api/fee/callback/' . $id,
-            'AccountReference' => $code.' Course Payment',
-            'TransactionDesc' => $code.' Course Payment',
+            'AccountReference' => $codec.' Course Payment',
+            'TransactionDesc' => $codec.' Course Payment',
         ];
         $data_string = json_encode($curl_post_data);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
