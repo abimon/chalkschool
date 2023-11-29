@@ -15,6 +15,13 @@ return new class extends Migration
     {
         Schema::create('mpesas', function (Blueprint $table) {
             $table->id();
+            $table->string('TransactionType');
+            $table->string('Student_id');
+            $table->string('TransAmount');
+            $table->string('MpesaReceiptNumber');
+            $table->string('TransactionDate');
+            $table->string('PhoneNumber');
+            $table->string('response');
             $table->timestamps();
         });
     }
