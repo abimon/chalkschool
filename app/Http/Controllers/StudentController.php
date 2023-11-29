@@ -173,9 +173,9 @@ class StudentController extends Controller
     }
     function update($id,$amount)
     {
-        Student::where('id',$id)->update([
-            'paid' => +$amount,
-        ]);
+        $acc=Student::where('id',$id)->first();
+        $acc->paid=+$amount;
+        $acc->update();
         return redirect()->back();
     }
     public function destroy(Student $student)
