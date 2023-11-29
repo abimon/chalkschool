@@ -113,7 +113,16 @@ return [
             'driver' => 'monolog',
             'handler' => NullHandler::class,
         ],
-
+        'mpesa'=>[
+            'driver' => 'daily',
+            'path' => storage_path('logs/mpesa.log'),
+            'level' => 'info',
+        ],
+        'mpesaErrors'=>[
+            'driver' => 'daily',
+            'path' => storage_path('logs/mpesaErrors.log'),
+            'level' => 'info',
+        ],
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],

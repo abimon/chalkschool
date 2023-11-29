@@ -80,6 +80,7 @@
             <div class="col-lg-4 col-md-6 p-2">
                 <div class="white-box analytics-info d-flex flex-column h-100 justify-content-between">
                     <h5 class="box-title">{{$course->title}}</h5>
+                    <h6 class="box-title text-danger">({{$course->category}} Course)</h6>
                     <ul class="list-inline two-part d-flex align-items-center mb-0">
                         <li class="ms-auto">KShs. <span class="counter">{{number_format($course->fee)}}</span></li>
                         <li class="ms-auto"><span class="counter text-success">{{$course->duration}}</span></li>
