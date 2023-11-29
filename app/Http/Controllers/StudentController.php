@@ -135,7 +135,6 @@ class StudentController extends Controller
                 'PhoneNumber' => $phone,
                 'response' => $message
             ]);
-            $amount = $res['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'];
             $this->update($id, $amount);
         } else {
             Log::channel('mpesaErrors')->info((json_encode($res['Body']['stkCallback']['ResultDesc'])));
