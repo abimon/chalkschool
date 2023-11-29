@@ -111,10 +111,10 @@ class StudentController extends Controller
         if ($res['Body']['stkCallback']['ResultCode'] == 0) {
             $message = $res['Body']['stkCallback']['ResultDesc'];
             $pref = $res['Body']['stkCallback']['CallbackMetadata']['Item'];
-            $amount = $pref . ([0]['Value']);
-            $TransactionId = $pref . ([1]['Value']);
-            $date = $pref . ([2]['Value']);
-            $phone = $pref . ([3]['Value']);
+            $amount = $res['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'];
+            $TransactionId = $res['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'];
+            $date = $res['Body']['stkCallback']['CallbackMetadata']['Item'][2]['Value'];
+            $phone = $res['Body']['stkCallback']['CallbackMetadata']['Item'][3]['Value'];
             Log::channel('mpesa')->info(
                 json_encode(
                     [
