@@ -33,16 +33,23 @@ class StudentController extends Controller
     public function create($id)
     {
         $course=Course::find($id);
-        Student::create([
-            'user_id'=>Auth()->user()->id,
-            'course_code'=>$course->unit_code,
-            'fee'=>$course->fee,
-            'cohort'=>request()->cohort,
-            'paid'=>0,
-        ]);
+        $student = Student::where('user_id',Auth()->user()->id)->where('course_code',$course->unit_code)->first();
+        if(!$student){
+            Student::create([
+                'user_id'=>Auth()->user()->id,
+                'course_code'=>$course->unit_code,
+                'fee'=>$course->fee,
+                'cohort'=>request()->cohort,
+                'paid'=>0,
+            ]);
+            $data=[
+                'unit_code'=>$course->unit_code,
+                'fee'=>$course->fee,
+            ];
+        }
         $data=[
             'unit_code'=>$course->unit_code,
-            'fee'=>$course->fee,
+            'fee'=>($course->fee)-($student->paid),
         ];
         return view('pay',$data);
     }
