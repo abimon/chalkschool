@@ -6,7 +6,7 @@ use App\Models\Course;
 use App\Models\Mpesa;
 use App\Models\Student;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response ;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
 class StudentController extends Controller
@@ -18,40 +18,39 @@ class StudentController extends Controller
      */
     public function index()
     {
-        if(Auth()->user()->role=='Admin'){
-            $courses=Student::join('users','users.id','=','students.user_id')->join('courses','courses.unit_code','=','students.course_code')
-            ->select('users.name','users.contact','users.email','users.residence','students.fee','students.paid','students.course_code','students.cohort','students.created_at','students.updated_at','courses.title','courses.duration','courses.category')->get();
-        }
-        else{
-            $courses = Student::where('user_id',Auth()->user()->id)->get();
+        if (Auth()->user()->role == 'Admin') {
+            $courses = Student::join('users', 'users.id', '=', 'students.user_id')->join('courses', 'courses.unit_code', '=', 'students.course_code')
+                ->select('users.name', 'users.contact', 'users.email', 'users.residence', 'students.fee', 'students.paid', 'students.course_code', 'students.cohort', 'students.created_at', 'students.updated_at', 'courses.title', 'courses.duration', 'courses.category')->get();
+        } else {
+            $courses = Student::where('user_id', Auth()->user()->id)->get();
         }
         $data = [
-            'items'=>$courses
+            'items' => $courses
         ];
-        return view('courses',$data);
+        return view('courses', $data);
     }
     public function create($id)
     {
-        $course=Course::find($id);
-        $student = Student::where('user_id',Auth()->user()->id)->where('course_code',$course->unit_code)->first();
-        if(!$student){
+        $course = Course::find($id);
+        $student = Student::where('user_id', Auth()->user()->id)->where('course_code', $course->unit_code)->first();
+        if (!$student) {
             Student::create([
-                'user_id'=>Auth()->user()->id,
-                'course_code'=>$course->unit_code,
-                'fee'=>$course->fee,
-                'cohort'=>request()->cohort,
-                'paid'=>0,
+                'user_id' => Auth()->user()->id,
+                'course_code' => $course->unit_code,
+                'fee' => $course->fee,
+                'cohort' => request()->cohort,
+                'paid' => 0,
             ]);
-            $data=[
-                'unit_code'=>$course->unit_code,
-                'fee'=>$course->fee,
+            $data = [
+                'unit_code' => $course->unit_code,
+                'fee' => $course->fee,
             ];
         }
-        $data=[
-            'unit_code'=>$course->unit_code,
-            'fee'=>($course->fee)-($student->paid),
+        $data = [
+            'unit_code' => $course->unit_code,
+            'fee' => ($course->fee) - ($student->paid),
         ];
-        return view('pay',$data);
+        return view('pay', $data);
     }
 
     public function store(Request $request)
@@ -61,25 +60,24 @@ class StudentController extends Controller
 
     public function show()
     {
-        $fees=[];
-        $student = Student::where('user_id',Auth()->user()->id)->get();
-        foreach($student as $s){
-            $fee=Mpesa::where('Student_id',$s->id)->get();
-            foreach($fee as $f){
-                array_push($fees,$f);
+        $fees = [];
+        $student = Student::where('user_id', Auth()->user()->id)->get();
+        foreach ($student as $s) {
+            $fee = Mpesa::where('Student_id', $s->id)->get();
+            foreach ($fee as $f) {
+                array_push($fees, $f);
             }
         }
-        
+
         //  return $fees;
-        $data=[
-            'items'=>$fees
+        $data = [
+            'items' => $fees
         ];
-        return view('fee',$data);
+        return view('fee', $data);
     }
 
     public function edit($code)
     {
-        
     }
     function generate_token()
     {
@@ -109,21 +107,37 @@ class StudentController extends Controller
     public function Callback($id)
     {
         $res = request();
-        if($res['Body']['stkCallback']['ResultCode']==0){
-        Log::channel('mpesa')->info(json_encode(['massage'=>$res['Body']['stkCallback']['ResultDesc'],'accountId'=>$id,'Amount'=>$res['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'],'TransactionId'=>$res['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'],'whole'=>$res['Body']]));
-        Mpesa::create([
+
+        if ($res['Body']['stkCallback']['ResultCode'] == 0) {
+            $message = $res['Body']['stkCallback']['ResultDesc'];
+            $pref = $res['Body']['stkCallback']['CallbackMetadata']['Item'];
+            $amount = $pref . ([0]['Value']);
+            $TransactionId = $pref . ([1]['Value']);
+            $date = $pref . ([2]['Value']);
+            $phone = $pref . ([3]['Value']);
+            Log::channel('mpesa')->info(
+                json_encode(
+                    [
+                        'message' => $message,
+                        'amount' => $amount,
+                        'phone' => $phone,
+                        'date' => $date,
+                        'whole' => $res['Body']
+                    ]
+                )
+            );
+            Mpesa::create([
                 'TransactionType' => 'Paybill',
                 'Student_id' => $id,
-                'TransAmount' => $res['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'],
-                'MpesaReceiptNumber' => $res['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'],
-                'TransactionDate' => $res['Body']['stkCallback']['CallbackMetadata']['Item'][2]['Value'],
-                'PhoneNumber' => $res['Body']['stkCallback']['CallbackMetadata']['Item'][3]['Value'],
-                'response' => 'Success'
+                'TransAmount' => $amount,
+                'MpesaReceiptNumber' => $TransactionId,
+                'TransactionDate' => $date,
+                'PhoneNumber' => $phone,
+                'response' => $message
             ]);
             $amount = $res['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'];
-            $this->update($id,$amount);
-        }
-        else{
+            $this->update($id, $amount);
+        } else {
             Log::channel('mpesaErrors')->info((json_encode($res['Body']['stkCallback']['ResultDesc'])));
         }
         $response = new Response();
@@ -134,8 +148,8 @@ class StudentController extends Controller
     function Pay($codec)
     {
         $phone = request()->contact;
-        $amount=request()->amount;
-        $course= Student::where('course_code',$codec)->where('user_id',Auth()->user()->id)->first();
+        $amount = request()->amount;
+        $course = Student::where('course_code', $codec)->where('user_id', Auth()->user()->id)->first();
         $id = $course->id;
         $code = str_replace('+', '', substr('254', 0, 1)) . substr('254', 1);
         $originalStr = $phone;
@@ -155,8 +169,8 @@ class StudentController extends Controller
             'PartyB' => env('MPESA_SHORT_CODE'),
             'PhoneNumber' => $contact,
             'CallBackURL' => 'https://school.healthandlifecentre.com/api/fee/callback/' . $id,
-            'AccountReference' => $codec.' Course Payment',
-            'TransactionDesc' => $codec.' Course Payment',
+            'AccountReference' => $codec . ' Course Payment',
+            'TransactionDesc' => $codec . ' Course Payment',
         ];
         $data_string = json_encode($curl_post_data);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -168,13 +182,13 @@ class StudentController extends Controller
         if ($res->ResponseCode == 0) {
             return redirect('/');
         } else {
-            return redirect()->back()->withInput()->with('message',"Error. Try again.");
+            return redirect()->back()->withInput()->with('message', "Error. Try again.");
         }
     }
-    function update($id,$amount)
+    function update($id, $amount)
     {
-        $acc=Student::where('id',$id)->first();
-        $acc->paid=+$amount;
+        $acc = Student::where('id', $id)->first();
+        $acc->paid = +$amount;
         $acc->update();
         return redirect()->back();
     }
