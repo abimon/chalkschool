@@ -72,7 +72,7 @@ class StudentController extends Controller
         
         //  return $fees;
         $data=[
-            'fee'=>$fees
+            'items'=>$fees
         ];
         return view('fee',$data);
     }
