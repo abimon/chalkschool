@@ -68,7 +68,7 @@ class StudentController extends Controller
             array_push($fees,['fee'=>$fee]);
         }
          return $fees[0];
-        return view('fee',['fee'=>$fees]);
+        return view('fee',$fees);
     }
 
     public function edit($code)
