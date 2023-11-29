@@ -64,8 +64,10 @@ class StudentController extends Controller
         $fees=[];
         $student = Student::where('user_id',Auth()->user()->id)->get();
         foreach($student as $s){
-            $fee=Mpesa::where('Student_id',$s->id)->first();
-            array_push($fees,$fee);
+            $fee=Mpesa::where('Student_id',$s->id)->get();
+            foreach($fee as $f){
+                array_push($fees,$f);
+            }
         }
          return $fees;
         return view('fee',$fees);
