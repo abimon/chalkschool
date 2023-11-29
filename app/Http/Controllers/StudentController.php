@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Mpesa;
 use App\Models\Student;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response ;
 use Illuminate\Support\Facades\Log;
@@ -70,11 +69,12 @@ class StudentController extends Controller
                 array_push($fees,$f);
             }
         }
-        $users = User::all();
-        return $users;
-        //  return $fees;
         
-        return view('fee',$fees);
+        //  return $fees;
+        $data=[
+            'fee'=>$fees
+        ];
+        return view('fee',$data);
     }
 
     public function edit($code)

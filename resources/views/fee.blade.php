@@ -5,7 +5,7 @@
         <div class="col-sm-12">
             <div class="white-box">
                 <h3 class="box-title">Payment Details</h3>
-                @if($fee->count()>0)
+                @if($items->count()>0)
                 <div class="table-responsive">
                     <table class="table text-nowrap">
                         <thead>
@@ -20,7 +20,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($fees as $key=>$item)
+                            @foreach($items as $key=>$item)
                             <tr>
                                 <td>{{$key+1}}</td>
                                 <td>{{$item->Student_id}}</td>
