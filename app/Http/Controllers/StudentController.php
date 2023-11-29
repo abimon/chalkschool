@@ -107,20 +107,18 @@ class StudentController extends Controller
     public function Callback($id)
     {
         $res = request();
-
         if ($res['Body']['stkCallback']['ResultCode'] == 0) {
             $message = $res['Body']['stkCallback']['ResultDesc'];
-            $pref = $res['Body']['stkCallback']['CallbackMetadata']['Item'];
             $amount = $res['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'];
             $TransactionId = $res['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'];
             $date = $res['Body']['stkCallback']['CallbackMetadata']['Item'][2]['Value'];
-            $phone = $res['Body']['stkCallback']['CallbackMetadata']['Item'][3]['Value'];
+            $phne = $res['Body']['stkCallback']['CallbackMetadata']['Item'][3]['Value'];
             Log::channel('mpesa')->info(
                 json_encode(
                     [
                         'message' => $message,
                         'amount' => $amount,
-                        'phone' => $phone,
+                        'phone' => $phne,
                         'date' => $date,
                         'whole' => $res['Body']
                     ]
@@ -132,10 +130,10 @@ class StudentController extends Controller
                 'TransAmount' => $amount,
                 'MpesaReceiptNumber' => $TransactionId,
                 'TransactionDate' => $date,
-                'PhoneNumber' => $phone,
+                'PhoneNumber' => '+'.$phne,
                 'response' => $message
             ]);
-            $this->update($id, $amount);
+            Student::where('id', $id)->update(['paid'=>+$amount]);
         } else {
             Log::channel('mpesaErrors')->info((json_encode($res['Body']['stkCallback']['ResultDesc'])));
         }
@@ -186,7 +184,7 @@ class StudentController extends Controller
     }
     function update($id, $amount)
     {
-        Student::where('id', $id)->update(['paid'=>+$amount]);
+        
     }
     public function destroy(Student $student)
     {
