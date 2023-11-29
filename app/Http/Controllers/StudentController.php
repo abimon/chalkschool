@@ -67,7 +67,7 @@ class StudentController extends Controller
             $fee=Mpesa::where('Student_id',$s->id)->first();
             array_push($fees,['fee'=>$fee]);
         }
-        return $fee;
+        // return $fee;
         return view('fee',$fees);
     }
 
