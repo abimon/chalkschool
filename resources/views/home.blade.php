@@ -84,7 +84,7 @@
                         <li class="ms-auto">KShs. <span class="counter">{{number_format($course->fee)}}</span></li>
                         <li class="ms-auto"><span class="counter text-success">{{$course->duration}}</span></li>
                     </ul>
-                    <div style="align-items: bottom;"><button data-toggle="modal" data-target="#{{$course->unit_code}}" class="btn btn-primary  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white">Enroll</button></div>
+                    <button data-toggle="modal" data-target="#{{$course->unit_code}}" class="btn btn-primary">Enroll</button>
                     <div class="modal fade" id="{{$course->unit_code}}" tabindex="-1" role="dialog" aria-labelledby="{{$course->unit_code}}Label" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -103,7 +103,7 @@
                                             @endif
                                         </p>
                                         <p>Are sure you want to enroll for this course?</p>
-                                        <?php $cohorts = ['Jan-March', 'April-June', 'July-September','October-December']; ?>
+                                        <?php $cohorts = ['Jan-March', 'April-June', 'July-September', 'October-December']; ?>
                                         <div class="row">
                                             <label for="cohort" class="col-md-4 col-form-label text-md-end">{{ __('Cohort') }}</label>
                                             <div class="col-md-8">
@@ -131,7 +131,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             @endforeach
         </div>
