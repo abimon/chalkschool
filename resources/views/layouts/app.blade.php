@@ -66,19 +66,13 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/customer/view" aria-expanded="false">
-                                <i class="fa fa-users" aria-hidden="true"></i>
-                                <span class="hide-menu">Students</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/stock" aria-expanded="false">
                                 <i class="fa fa-table" aria-hidden="true"></i>
                                 <span class="hide-menu">Results</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/article/index" aria-expanded="false">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/mycourses" aria-expanded="false">
                                 <i class="fa fa-list" aria-hidden="true"></i>
                                 <span class="hide-menu">My Courses</span>
                             </a>

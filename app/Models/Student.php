@@ -12,6 +12,7 @@ class Student extends Model
         'user_id',
         'course_code',
         'fee',
+        'cohort',
         'paid',
     ];
 }

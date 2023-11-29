@@ -8,9 +8,8 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Make Payment') }}</div>
-
                 <div class="card-body">
-                    <form method="POST" action="/fees/create/{{$unit_code}}">
+                    <form method="POST" action="/student/pay/{{$unit_code}}">
                         @csrf
                         <div class="row mb-3">
                             <label for="unit_code" class="col-md-4 col-form-label text-md-end">{{ __('Course Code') }}</label>

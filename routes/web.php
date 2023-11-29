@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -28,4 +29,10 @@ Route::get('/course/index',[Coursecontroller::class,'index']);
 Route::get('/course/destroy/{id}',[Coursecontroller::class,'destroy']);
 Route::post('/course/update/{id}',[Coursecontroller::class,'update']);
 Route::post('/course/create',[Coursecontroller::class,'create']);
-    
+
+
+Route::controller(StudentController::class)->group(function(){
+    Route::get('/mycourses','index');
+    Route::post('/student/pay/{code}','Pay');
+    Route::post('/student/create/{code}','create');
+});

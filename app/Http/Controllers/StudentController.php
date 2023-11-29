@@ -18,9 +18,18 @@ class StudentController extends Controller
      */
     public function index()
     {
-        
+        if(Auth()->user()->role=='Admin'){
+            $courses=Student::join('users','users.id','=','students.user_id')->join('courses','courses.unit_code','=','students.course_code')
+            ->select('users.name','users.contact','users.email','users.residence','students.fee','students.paid','students.course_code','students.cohort','students.created_at','students.updated_at','courses.title','courses.duration','courses.category')->get();
+        }
+        else{
+            $courses = Student::where('user_id',Auth()->user()->id)->get();
+        }
+        $data = [
+            'items'=>$courses
+        ];
+        return view('courses',$data);
     }
-
     public function create($id)
     {
         $course=Course::find($id);
@@ -28,13 +37,14 @@ class StudentController extends Controller
             'user_id'=>Auth()->user()->id,
             'course_code'=>$course->unit_code,
             'fee'=>$course->fee,
+            'cohort'=>request()->cohort,
             'paid'=>0,
         ]);
         $data=[
-            'code'=>$course->unit_code,
+            'unit_code'=>$course->unit_code,
             'fee'=>$course->fee,
         ];
-        return redirect('/student/payfee',$data);
+        return view('pay',$data);
     }
 
     public function store(Request $request)
@@ -103,9 +113,9 @@ class StudentController extends Controller
     }
     function Pay($code)
     {
-        $phone = request()->phone;
+        $phone = request()->contact;
         $amount=request()->amount;
-        $course= Course::where('unit_code')->where('user_id',Auth()->user()->id)->first();
+        $course= Student::where('course_code',$code)->where('user_id',Auth()->user()->id)->first();
         $id = $course->id;
         $code = str_replace('+', '', substr('254', 0, 1)) . substr('254', 1);
         $originalStr = $phone;
