@@ -16,7 +16,6 @@
                                 <th class="border-top-0">Transaction Id</th>
                                 <th class="border-top-0">Phone Number</th>
                                 <th class="border-top-0">Last Update</th>
-                                
                             </tr>
                         </thead>
                         <tbody>
