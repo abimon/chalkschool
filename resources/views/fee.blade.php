@@ -5,7 +5,7 @@
         <div class="col-sm-12">
             <div class="white-box">
                 <h3 class="box-title">Payment Details</h3>
-                @if($items->count()>0)
+                @if(count($items)>0)
                 <div class="table-responsive">
                     <table class="table text-nowrap">
                         <thead>
