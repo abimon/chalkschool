@@ -114,7 +114,7 @@ class StudentController extends Controller
     public function Callback($id)
     {
         $res = request();
-        Log::channel('mpesaSuccess')->info(json_encode(['whole' => $res['Body']]));
+        Log::channel('mpesaSuccess')->info(json_encode(['whole' => $res['Body'],'code'=>$res['Body']['stkCallback']['ResultCode']]));
         if ($res['Body']['stkCallback']['ResultCode'] == 0) {
             Mpesa::create([
                 'TransactionType' => 'Paybill',
