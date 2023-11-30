@@ -11,7 +11,10 @@
                         <thead>
                             <tr>
                                 <th class="border-top-0">#</th>
-                                <th class="border-top-0">Account</th>
+                                @if(Auth()->user()->role=='Admin')
+                                <th class="border-top-0">Student</th>
+                                @endif
+                                <th class="border-top-0">Course</th>
                                 <th class="border-top-0">Transacted Amount</th>
                                 <th class="border-top-0">Transaction Id</th>
                                 <th class="border-top-0">Phone Number</th>
@@ -22,6 +25,9 @@
                             @foreach($items as $key=>$item)
                             <tr>
                                 <td>{{$key+1}}</td>
+                                @if(Auth()->user()->role=='Admin')
+                                <td>{{$item->name}}</td>
+                                @endif
                                 <td>{{$item->course_code}}</td>
                                 <td>{{$item->TransAmount}}</td>
                                 <td>{{$item->MpesaReceiptNumber}}</td>

@@ -63,7 +63,12 @@ class StudentController extends Controller
         $fees = [];
         $student = Student::where('user_id', Auth()->user()->id)->get();
         foreach ($student as $s) {
-            $fee = Mpesa::join('students','students.id','=','mpesas.Student_id')->select('mpesas.*','students.course_code')->get();
+            if(Auth()->user()->role=='Admin'){
+                $fee = Mpesa::join('students','students.id','=','mpesas.Student_id')->join('users','users.id','=','students.user_id')->select('mpesas.*','students.course_code','users.name')->get();
+            }
+            else{
+                $fee = Mpesa::join('students','students.id','=','mpesas.Student_id')->join('users','users.id','=','students.user_id')->where('users.id',Auth()->user()->id)->select('mpesas.*','students.course_code','users.name')->get();
+            }
             foreach ($fee as $f) {
                 array_push($fees, $f);
             }
