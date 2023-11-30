@@ -113,9 +113,9 @@ return [
             'driver' => 'monolog',
             'handler' => NullHandler::class,
         ],
-        'mpesa'=>[
+        'mpesaSuccess'=>[
             'driver' => 'daily',
-            'path' => storage_path('logs/mpesa.log'),
+            'path' => storage_path('logs/mpesaSuccess.log'),
             'level' => 'info',
         ],
         'mpesaErrors'=>[

@@ -122,7 +122,7 @@ class StudentController extends Controller
             $TransactionId = $res['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'];
             $date = $res['Body']['stkCallback']['CallbackMetadata']['Item'][2]['Value'];
             $phne = $res['Body']['stkCallback']['CallbackMetadata']['Item'][3]['Value'];
-            Log::channel('mpesa')->info(
+            Log::channel('mpesaSuccess')->info(
                 json_encode(
                     [
                         'message' => $message,
