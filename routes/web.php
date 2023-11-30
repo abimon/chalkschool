@@ -23,11 +23,12 @@ Route::get('/', function () {
 Auth::routes();
 Route::middleware('auth')->group(function (){
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::controller(StudentController::class)->group(function(){
+        Route::get('/mycourses','index');
+        Route::get('/fees','show');
+        Route::post('/student/pay/{code}','Pay');
+        Route::post('/student/create/{code}','create');
+    });
 });
 
-Route::controller(StudentController::class)->group(function(){
-    Route::get('/mycourses','index');
-    Route::get('/fees','show');
-    Route::post('/student/pay/{code}','Pay');
-    Route::post('/student/create/{code}','create');
-});
+
