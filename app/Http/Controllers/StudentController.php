@@ -178,7 +178,7 @@ class StudentController extends Controller
             'PhoneNumber' => $contact,
             'CallBackURL' => 'https://school.healthandlifecentre.com/api/fee/callback/' . $id,
             'AccountReference' => $codec . ' Course Payment of id '.$id,
-            'TransactionDesc' => $codec . ' Course Payment',
+            'TransactionDesc' => $codec . ' Course Payment '.$id,
         ];
         $data_string = json_encode($curl_post_data);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
