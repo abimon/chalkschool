@@ -115,23 +115,18 @@ class StudentController extends Controller
     {
         $res = request();
         Log::channel('mpesaSuccess')->info(json_encode(['whole' => $res['Body']]));
-        $message = $res['Body']['stkCallback']['ResultDesc'];
-        $amount = $res['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'];
-        $TransactionId = $res['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'];
-        $date = $res['Body']['stkCallback']['CallbackMetadata']['Item'][2]['Value'];
-        $phne = $res['Body']['stkCallback']['CallbackMetadata']['Item'][3]['Value'];
         if ($res['Body']['stkCallback']['ResultCode'] == 0) {
             Mpesa::create([
                 'TransactionType' => 'Paybill',
                 'Student_id' => $id,
-                'TransAmount' => $amount,
-                'MpesaReceiptNumber' => $TransactionId,
-                'TransactionDate' => $date,
-                'PhoneNumber' => '+' . $phne,
-                'response' => $message
+                'TransAmount' => $res['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'],
+                'MpesaReceiptNumber' => $res['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'],
+                'TransactionDate' => $res['Body']['stkCallback']['CallbackMetadata']['Item'][2]['Value'],
+                'PhoneNumber' => '+' . ($res['Body']['stkCallback']['CallbackMetadata']['Item'][3]['Value']),
+                'response' => $res['Body']['stkCallback']['ResultDesc']
             ]);
             $student = Student::find($id);
-            $student->paid += $amount;
+            $student->paid += $res['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'];
             $student->update();
         } else {
             Log::channel('mpesaErrors')->info((json_encode($res['Body']['stkCallback']['ResultDesc'])));
