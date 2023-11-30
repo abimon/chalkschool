@@ -63,7 +63,7 @@ class StudentController extends Controller
         $fees = [];
         $student = Student::where('user_id', Auth()->user()->id)->get();
         foreach ($student as $s) {
-            $fee = Mpesa::join('students','students.id','=','mpesas.Student_id')->select('mpesas.*','students.unit_code')->get();
+            $fee = Mpesa::join('students','students.id','=','mpesas.Student_id')->select('mpesas.*','students.course_code')->get();
             foreach ($fee as $f) {
                 array_push($fees, $f);
             }
