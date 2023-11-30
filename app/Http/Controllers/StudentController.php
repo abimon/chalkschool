@@ -20,7 +20,7 @@ class StudentController extends Controller
     {
         if (Auth()->user()->role == 'Admin') {
             $courses = Student::join('users', 'users.id', '=', 'students.user_id')->join('courses', 'courses.unit_code', '=', 'students.course_code')
-                ->select('users.name', 'users.contact', 'users.email', 'users.residence', 'students.fee', 'students.paid', 'students.course_code', 'students.cohort', 'students.created_at', 'students.updated_at', 'courses.title', 'courses.duration', 'courses.category','students.id')->get();
+                ->select('users.name', 'users.contact', 'users.email', 'users.residence', 'students.fee', 'students.paid', 'students.course_code', 'students.cohort', 'students.created_at', 'students.updated_at', 'courses.title', 'courses.duration', 'courses.category', 'students.id')->get();
         } else {
             $courses = Student::where('user_id', Auth()->user()->id)->get();
         }
@@ -46,9 +46,8 @@ class StudentController extends Controller
                 'fee' => $course->fee,
             ];
             $paid = 0;
-        }
-        else{
-            $paid =$student->paid;
+        } else {
+            $paid = $student->paid;
         }
         $data = [
             'unit_code' => $course->unit_code,
@@ -67,11 +66,10 @@ class StudentController extends Controller
         $fees = [];
         $student = Student::where('user_id', Auth()->user()->id)->get();
         foreach ($student as $s) {
-            if(Auth()->user()->role=='Admin'){
-                $fee = Mpesa::join('students','students.id','=','mpesas.Student_id')->join('users','users.id','=','students.user_id')->select('mpesas.*','students.course_code','users.name')->get();
-            }
-            else{
-                $fee = Mpesa::join('students','students.id','=','mpesas.Student_id')->join('users','users.id','=','students.user_id')->where('users.id',Auth()->user()->id)->select('mpesas.*','students.course_code','users.name')->get();
+            if (Auth()->user()->role == 'Admin') {
+                $fee = Mpesa::join('students', 'students.id', '=', 'mpesas.Student_id')->join('users', 'users.id', '=', 'students.user_id')->select('mpesas.*', 'students.course_code', 'users.name')->get();
+            } else {
+                $fee = Mpesa::join('students', 'students.id', '=', 'mpesas.Student_id')->join('users', 'users.id', '=', 'students.user_id')->where('users.id', Auth()->user()->id)->select('mpesas.*', 'students.course_code', 'users.name')->get();
             }
             foreach ($fee as $f) {
                 array_push($fees, $f);
@@ -116,30 +114,40 @@ class StudentController extends Controller
     public function Callback($id)
     {
         $res = request();
+        Log::channel('mpesaSuccess')->info(
+            json_encode(
+                ['whole' => $res['Body']]
+            )
+        );
+        // Log::channel('mpesaSuccess')->info(
+        //     json_encode(
+        //         [
+        //             'message' => $message,
+        //             'amount' => $amount,
+        //             'phone' => $phne,
+        //             'date' => $date,
+        //             'whole' => $res['Body']
+        //         ]
+        //     )
+        // );
         if ($res['Body']['stkCallback']['ResultCode'] == 0) {
+            
             $message = $res['Body']['stkCallback']['ResultDesc'];
             $amount = $res['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'];
             $TransactionId = $res['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'];
             $date = $res['Body']['stkCallback']['CallbackMetadata']['Item'][2]['Value'];
             $phne = $res['Body']['stkCallback']['CallbackMetadata']['Item'][3]['Value'];
-            Log::channel('mpesaSuccess')->info(
-                json_encode(
-                    [
-                        
-                        'whole' => $res['Body']
-                    ]
-                )
-            );
+
             Mpesa::create([
                 'TransactionType' => 'Paybill',
                 'Student_id' => $id,
                 'TransAmount' => $amount,
                 'MpesaReceiptNumber' => $TransactionId,
                 'TransactionDate' => $date,
-                'PhoneNumber' => '+'.$phne,
+                'PhoneNumber' => '+' . $phne,
                 'response' => $message
             ]);
-            $student=Student::find($id);
+            $student = Student::find($id);
             $student->paid += $amount;
             $student->update();
         } else {
@@ -174,8 +182,8 @@ class StudentController extends Controller
             'PartyB' => env('MPESA_SHORT_CODE'),
             'PhoneNumber' => $contact,
             'CallBackURL' => 'https://school.healthandlifecentre.com/api/fee/callback/' . $id,
-            'AccountReference' => $codec . ' Course Payment of id '.$id,
-            'TransactionDesc' => $codec . ' Course Payment '.$id,
+            'AccountReference' => $codec . ' Course Payment of id ' . $id,
+            'TransactionDesc' => $codec . ' Course Payment ' . $id,
         ];
         $data_string = json_encode($curl_post_data);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -193,7 +201,7 @@ class StudentController extends Controller
     function update($id)
     {
         $course = Student::find($id);
-        
+
         $data = [
             'unit_code' => $course->course_code,
             'fee' => ($course->fee) - ($course->paid),
