@@ -116,11 +116,7 @@ class StudentController extends Controller
         $res = request();
         Log::channel('mpesaSuccess')->info(json_encode([
             'code' => $res['Body']['stkCallback']['ResultCode'], 'TransactionType' => 'Paybill',
-            'Student_id' => $id,
-            'TransAmount' => $res['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'],
             'MpesaReceiptNumber' => $res['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'],
-            'TransactionDate' => $res['Body']['stkCallback']['CallbackMetadata']['Item'][2]['Value'],
-            'PhoneNumber' => '+' . ($res['Body']['stkCallback']['CallbackMetadata']['Item'][3]['Value']),
             'response' => $res['Body']['stkCallback']['ResultDesc']
         ]));
         if ($res['Body']['stkCallback']['ResultCode'] == 0) {
