@@ -177,7 +177,7 @@ class StudentController extends Controller
             'PartyB' => env('MPESA_SHORT_CODE'),
             'PhoneNumber' => $contact,
             'CallBackURL' => 'https://school.healthandlifecentre.com/api/fee/callback/' . $id,
-            'AccountReference' => $codec . ' Course Payment',
+            'AccountReference' => $codec . ' Course Payment of id '.$id,
             'TransactionDesc' => $codec . ' Course Payment',
         ];
         $data_string = json_encode($curl_post_data);
