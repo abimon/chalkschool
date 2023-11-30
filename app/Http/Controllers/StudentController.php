@@ -45,10 +45,14 @@ class StudentController extends Controller
                 'unit_code' => $course->unit_code,
                 'fee' => $course->fee,
             ];
+            $paid = 0;
+        }
+        else{
+            $paid =$student->paid;
         }
         $data = [
             'unit_code' => $course->unit_code,
-            'fee' => ($course->fee) - ($student->paid),
+            'fee' => ($course->fee) - $paid,
         ];
         return view('pay', $data);
     }
