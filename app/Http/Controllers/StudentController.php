@@ -138,7 +138,9 @@ class StudentController extends Controller
                 'PhoneNumber' => '+'.$phne,
                 'response' => $message
             ]);
-            Student::where('id', $id)->update(['paid'=>+$amount]);
+            $student=Student::find($id);
+            $student->paid += $amount;
+            $student->update();
         } else {
             Log::channel('mpesaErrors')->info((json_encode($res['Body']['stkCallback']['ResultDesc'])));
         }
