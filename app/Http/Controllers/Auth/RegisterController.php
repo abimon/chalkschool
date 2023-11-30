@@ -76,7 +76,7 @@ class RegisterController extends Controller
             'residence'=>$data['county'].', '.$data['town'],
             'gender'=>$data['gender'],
             'age_group'=>$data['age_group'],
-            'role'=>$data['role'],
+            'role'=>'Student',
             'password'=>Hash::make($data['password'])
         ]);
     }
