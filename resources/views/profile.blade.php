@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('dashboard')
+@section('content')
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-4 col-xlg-3 col-md-12">
