@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function (){
         Route::post('/student/pay/{code}','Pay');
         Route::post('/student/create/{code}','create');
     });
+    Route::get('/profile',function(){return view('profile');});
 });
 
 
