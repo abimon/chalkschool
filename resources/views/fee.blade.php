@@ -22,7 +22,7 @@
                             @foreach($items as $key=>$item)
                             <tr>
                                 <td>{{$key+1}}</td>
-                                <td>{{$item->unit_code}}</td>
+                                <td>{{$item->course_code}}</td>
                                 <td>{{$item->TransAmount}}</td>
                                 <td>{{$item->MpesaReceiptNumber}}</td>
                                 <td>{{$item->PhoneNumber}}</td>
