@@ -33,6 +33,7 @@
                                 <td>{{$item->MpesaReceiptNumber}}</td>
                                 <td>{{$item->PhoneNumber}}</td>
                                 <td>{{($item->updated_at)->diffForHumans()}}</td>
+                                
                             </tr>
                             @endforeach
                         </tbody>

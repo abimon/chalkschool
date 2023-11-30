@@ -31,6 +31,10 @@
                                 <td>{{$item->fee}}</td>
                                 <td>{{$item->paid}}</td>
                                 <td>{{($item->updated_at)->diffForHumans()}}</td>
+                                @if(($item->paid)<($item->fee))
+                                <td><a href="/fee/pay/{{$item->id}}"><button class="btn btn-success">Pay</button></a></td>
+                                @else
+                                @endif
                                 <div class="modal fade" id="students{{$key+1}}" tabindex="-1" role="dialog" aria-labelledby="edit{{$key+1}}Label" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">

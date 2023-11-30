@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function (){
         Route::get('/mycourses','index');
         Route::get('/fees','show');
         Route::post('/student/pay/{code}','Pay');
+        Route::get('/fee/pay/{id}','update');
         Route::post('/student/create/{code}','create');
     });
     Route::get('/profile',function(){return view('profile');});

@@ -193,9 +193,14 @@ class StudentController extends Controller
             return redirect()->back()->withInput()->with('message', "Error. Try again.");
         }
     }
-    function update($id, $amount)
+    function update($id)
     {
-        
+        $course = Student::find($id);
+        $data = [
+            'unit_code' => $course->unit_code,
+            'fee' => ($course->fee) - ($course->paid),
+        ];
+        return view('pay', $data);
     }
     public function destroy(Student $student)
     {
