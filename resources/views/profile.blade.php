@@ -18,7 +18,7 @@
                 </div>
                 <div class="user-btm-box mt-5 d-md-flex">
                     <div class="text-center">
-                        <h1>+{{Auth()->user()->contact}}</h1>
+                        <h1>{{Auth()->user()->contact}}</h1>
                     </div>
                 </div>
             </div>
@@ -41,38 +41,8 @@
                             <label for="floatingInput">Email address</label>
                         </div>
                         <div class="form-floating mt-1">
-                            <input type="text" name="residence" class="form-control" id="floatingInput" placeholder=" " value="{{Auth()->user()->current_residence}}">
+                            <input disabled type="text" name="residence" class="form-control" id="floatingInput" placeholder=" " value="{{Auth()->user()->residence}}">
                             <label for="floatingInput">Current Residence</label>
-                        </div>
-                        <div class='form-floating mb-2'>
-                            <select name='chapter' class='form-control' required>
-                                <?php $chapters = ['Nairobi', 'Eastern', 'Central', 'Rift Valley', 'Nyanza', 'Western', 'North Eastern', 'Coast', 'Diaspora']; ?>
-                                <option value="{{Auth()->user()->chapter}}" class='form-control'>{{Auth()->user()->chapter}}</option>
-                                @foreach($chapters as $chapter)
-                                    <option value="{{$chapter}}">{{$chapter}}</option>
-                                    @endforeach
-                            </select>
-                            <label for="inst">Current Chapter</label>
-                            @error('chapter')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class='form-floating mb-2'>
-                            <select name='inst' class='form-control' required>
-                                <?php $insts = ['JKUAT', 'MKU', 'KCA', 'CUK','KMTC', 'Other']; ?>
-                                <option value="{{Auth()->user()->inst}}" class='form-control'>{{Auth()->user()->inst}}</option>
-                                @foreach($insts as $inst)
-                                <option value="{{$inst}}" class='form-control'>{{$inst}}</option>
-                                @endforeach
-                            </select>
-                            <label for="inst">Affliate Institution</label>
-                            @error('chapter')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
                         </div>
                         <div class="form-group mb-4">
                             <div class="col-sm-12">
