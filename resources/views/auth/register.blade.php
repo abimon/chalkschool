@@ -69,6 +69,7 @@
                             </div>
                         </div>
                     </form>
+                    <p>Already has an account? <a href="/login">Login</a></p>
                 </div>
             </div>
         </div>
