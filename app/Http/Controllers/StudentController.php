@@ -125,10 +125,7 @@ class StudentController extends Controller
             Log::channel('mpesaSuccess')->info(
                 json_encode(
                     [
-                        'message' => $message,
-                        'amount' => $amount,
-                        'phone' => $phne,
-                        'date' => $date,
+                        
                         'whole' => $res['Body']
                     ]
                 )
