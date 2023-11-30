@@ -70,14 +70,14 @@
                         <div class="row mb-3">
                             <label for="ages" class="col-md-4 col-form-label text-md-end">{{ __('Age Group') }}</label>
                             <div class="col-md-6">
-                                <select name="agegroup" id="" class="form-control" required>
+                                <select name="age_group" id="" class="form-control" required>
                                     <option value="" selected disabled>Select your age group</option>
                                     @foreach($ages as $age)
                                     <option value="{{$age}}">{{$age}}</option>
                                     @endforeach
                                 </select>
 
-                                @error('agegroup')
+                                @error('age_group')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
