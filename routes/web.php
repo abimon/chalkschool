@@ -19,7 +19,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home');
 });
-
+Route::get('/logout', function () {
+    Auth::logout();
+    return redirect('/login');
+});
 Auth::routes();
 Route::middleware('auth')->group(function (){
     Route::get('/', [HomeController::class, 'index'])->name('home');
