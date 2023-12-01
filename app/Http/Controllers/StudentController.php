@@ -114,38 +114,36 @@ class StudentController extends Controller
     public function Callback($id)
     {
         $res = request();
-        if ($res['Body']['stkCallback']['ResultCode'] == 0) {
-            $message = $res['Body']['stkCallback']['ResultDesc'];
-            $amount = $res['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'];
-            $TransactionId = $res['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'];
-            $date = $res['Body']['stkCallback']['CallbackMetadata']['Item'][2]['Value'];
-            $phne = $res['Body']['stkCallback']['CallbackMetadata']['Item'][3]['Value'];
-            Log::channel('mpesaSuccess')->info(
-                json_encode(
-                    [
-                        'message' => $message,
-                        'amount' => $amount,
-                        'phone' => $phne,
-                        'date' => $date,
-                        'whole' => $res['Body']
-                    ]
-                )
-            );
-            Mpesa::create([
-                'TransactionType' => 'Paybill',
-                'Student_id' => $id,
-                'TransAmount' => $amount,
-                'MpesaReceiptNumber' => $TransactionId,
-                'TransactionDate' => $date,
-                'PhoneNumber' => '+' . $phne,
-                'response' => $message
-            ]);
-            $student = Student::find($id);
-            $student->paid += $amount;
-            $student->update();
-        } else {
-            Log::channel('mpesaErrors')->info((json_encode($res['Body']['stkCallback']['ResultDesc'])));
-        }
+        // if ($res['Body']['stkCallback']['ResultCode'] == 0) {
+        $message = $res['Body']['stkCallback']['ResultDesc'];
+        $amount = $res['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'];
+        $TransactionId = $res['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'];
+        $phne = $res['Body']['stkCallback']['CallbackMetadata']['Item'][3]['Value'];
+        Log::channel('mpesaSuccess')->info(
+            json_encode(
+                [
+                    'message' => $message,
+                    'amount' => $amount,
+                    'phone' => $phne,
+                    'whole' => $res['Body']
+                ]
+            )
+        );
+        Mpesa::create([
+            'TransactionType' => 'Paybill',
+            'Student_id' => $id,
+            'TransAmount' => $amount,
+            'MpesaReceiptNumber' => $TransactionId,
+            'TransactionDate' => date('d-m-Y'),
+            'PhoneNumber' => '+' . $phne,
+            'response' => $message
+        ]);
+        $student = Student::find($id);
+        $student->paid += $amount;
+        $student->update();
+        // } else {
+        //     Log::channel('mpesaErrors')->info((json_encode($res['Body']['stkCallback']['ResultDesc'])));
+        // }
         $response = new Response();
         $response->headers->set("Content-Type", "text/xml; charset=utf-8");
         $response->setContent(json_encode(["C2BPaymentConfirmationResult" => "Success"]));
