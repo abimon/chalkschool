@@ -118,7 +118,7 @@ class StudentController extends Controller
         $message = $res['Body']['stkCallback']['ResultDesc'];
         $amount = $res['Body']['stkCallback']['CallbackMetadata']['Item'][0]['Value'];
         $TransactionId = $res['Body']['stkCallback']['CallbackMetadata']['Item'][1]['Value'];
-        $phne = $res['Body']['stkCallback']['CallbackMetadata']['Item'][3]['Value'];
+        $phne = $res['Body']['stkCallback']['CallbackMetadata']['Item'][4]['Value'];
         Log::channel('mpesaSuccess')->info(json_encode(['whole' => $res['Body']]));
         Mpesa::create([
             'TransactionType' => 'Paybill',
