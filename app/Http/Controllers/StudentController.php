@@ -180,7 +180,7 @@ class StudentController extends Controller
             return redirect()->back()->withInput()->with('message', "Error. Try again.");
         }
     }
-    function update($id, $amount)
+    function update($id)
     {
         $course = Student::find($id);
         $data = [
