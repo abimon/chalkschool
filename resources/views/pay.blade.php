@@ -14,7 +14,8 @@
                         <div class="row mb-3">
                             <label for="unit_code" class="col-md-4 col-form-label text-md-end">{{ __('Course Code') }}</label>
                             <div class="col-md-6">
-                                <input id="unit_code" type="text" class="form-control @error('unit_code') is-invalid @enderror" name="unit_code" value="{{$unit_code}}" required autocomplete="unit_code">
+                                <input id="unit_code" disabled type="text" class="form-control @error('unit_code') is-invalid @enderror" name="unit_code" value="{{$unit_code}}" required autocomplete="unit_code">
+                                <small>This is your course code.</small>
                                 @error('unit_code')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
