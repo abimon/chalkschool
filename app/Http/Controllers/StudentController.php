@@ -22,7 +22,8 @@ class StudentController extends Controller
             $courses = Student::join('users', 'users.id', '=', 'students.user_id')->join('courses', 'courses.unit_code', '=', 'students.course_code')
                 ->select('users.name', 'users.contact', 'users.email', 'users.residence', 'students.fee', 'students.paid', 'students.course_code', 'students.cohort', 'students.created_at', 'students.updated_at', 'courses.title', 'courses.duration', 'courses.category', 'students.id')->get();
         } else {
-            $courses = Student::where('user_id', Auth()->user()->id)->get();
+            $courses = Student::where('user_id', Auth()->user()->id)->join('courses', 'courses.unit_code', '=', 'students.course_code')
+            ->select('students.fee', 'students.paid', 'students.course_code', 'students.cohort', 'students.created_at', 'students.updated_at', 'courses.title', 'courses.duration', 'courses.category', 'students.id')->get();;
         }
         $data = [
             'items' => $courses
