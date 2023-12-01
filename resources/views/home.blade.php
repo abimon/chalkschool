@@ -85,6 +85,7 @@
                         <li class="ms-auto">KShs. <span class="counter">{{number_format($course->fee)}}</span></li>
                         <li class="ms-auto"><span class="counter text-success">{{$course->duration}}</span></li>
                     </ul>
+                    @if(Auth()->user()->role!='Admin')
                     <button data-toggle="modal" data-target="#{{$course->unit_code}}" class="btn btn-primary">Enroll</button>
                     <div class="modal fade" id="{{$course->unit_code}}" tabindex="-1" role="dialog" aria-labelledby="{{$course->unit_code}}Label" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -131,6 +132,9 @@
                             </div>
                         </div>
                     </div>
+                    @else
+                    <a href="/mycourses"><button class="btn btn-primary">Check Enrollments</button></a>
+                    @endif
                 </div>
             </div>
             @endforeach

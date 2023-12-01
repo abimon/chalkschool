@@ -31,7 +31,7 @@
                                 <td>{{$item->fee}}</td>
                                 <td>{{$item->paid}}</td>
                                 <td>{{($item->updated_at)->diffForHumans()}}</td>
-                                @if(($item->paid)<($item->fee))
+                                @if((($item->paid)<($item->fee))&&((Auth()->user()->role)!='Admin'))
                                 <td><a href="/pay/{{$item->id}}"><button class="btn btn-success">Pay</button></a></td>
                                 @else
                                 @endif
