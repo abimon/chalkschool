@@ -26,6 +26,7 @@
                             <label for="contact" class="col-md-4 col-form-label text-md-end">{{ __('Phone No.') }}</label>
                             <div class="col-md-6">
                                 <input id="contact" type="number" class="form-control @error('contact') is-invalid @enderror" name="contact" value="{{Auth()->user()->contact}}" required autocomplete="contact" maxlength="13" minlength="9">
+                                <small>Edit to a phone number you want to pay with.</small>
                                 @error('contact')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -38,7 +39,7 @@
 
                             <div class="col-md-6">
                                 <input id="amount" type="number" class="form-control @error('amount') is-invalid @enderror" name="amount" value={{$fee}} required autocomplete="amount" maxlength="13" minlength="9">
-
+                                <small><i>You can edit the amount to pay.</i></small>
                                 @error('amount')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
