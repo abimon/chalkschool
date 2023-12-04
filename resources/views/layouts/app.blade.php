@@ -72,12 +72,14 @@
                                 <span class="hide-menu">Fees</span>
                             </a>
                         </li>
-                        <!-- <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/stock" aria-expanded="false">
+                        @if(Auth()->users()->role=='Admin')
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/enrolls" aria-expanded="false">
                                 <i class="fa fa-table" aria-hidden="true"></i>
-                                <span class="hide-menu">Results</span>
+                                <span class="hide-menu">Enrolled Students</span>
                             </a>
-                        </li> -->
+                        </li>
+                        @endif
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/mycourses" aria-expanded="false">
                                 <i class="fa fa-list" aria-hidden="true"></i>

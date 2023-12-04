@@ -85,56 +85,57 @@
                         <li class="ms-auto">KShs. <span class="counter">{{number_format($course->fee)}}</span></li>
                         <li class="ms-auto"><span class="counter text-success">{{$course->duration}}</span></li>
                     </ul>
-                    @if(Auth()->user()->role!='Admin')
-                    <button data-toggle="modal" data-target="#{{$course->unit_code}}" class="btn btn-primary">Enroll</button>
-                    <div class="modal fade" id="{{$course->unit_code}}" tabindex="-1" role="dialog" aria-labelledby="{{$course->unit_code}}Label" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="{{$course->unit_code}}Label">Enroll for {{$course->title}}</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <form method="post" action="/student/create/{{$course->id}}" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="modal-body">
-                                        <p>The course {{$course->title}}({{$course->unit_code}}) takes {{$course->duration}} and costs Kshs. {{$course->fee}}. It is offered {{$course->category}}.
-                                            @if(($course->category)=='Physical')
-                                            The fee include accommodation expenses.
-                                            @endif
-                                        </p>
-                                        <p>Are sure you want to enroll for this course?</p>
-                                        <?php $cohorts = ['Jan-March', 'April-June', 'July-September', 'October-December']; ?>
-                                        <div class="row">
-                                            <label for="cohort" class="col-md-4 col-form-label text-md-end">{{ __('Cohort') }}</label>
-                                            <div class="col-md-8">
-                                                <select name="cohort" id="" class="form-control" required>
-                                                    <option value="" selected disabled>Select your cohort</option>
-                                                    @foreach($cohorts as $cohort)
-                                                    <option value="{{$cohort}}">{{$cohort}}</option>
-                                                    @endforeach
-                                                </select>
+                    <div class="d-flex justify-content-between">
+                        <button data-toggle="modal" data-target="#{{$course->unit_code}}" class="btn btn-primary">Enroll</button>
+                        <div class="modal fade" id="{{$course->unit_code}}" tabindex="-1" role="dialog" aria-labelledby="{{$course->unit_code}}Label" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="{{$course->unit_code}}Label">Enroll for {{$course->title}}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="post" action="/student/create/{{$course->id}}" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <p>The course {{$course->title}}({{$course->unit_code}}) takes {{$course->duration}} and costs Kshs. {{$course->fee}}. It is offered {{$course->category}}.
+                                                @if(($course->category)=='Physical')
+                                                The fee include accommodation expenses.
+                                                @endif
+                                            </p>
+                                            <p>Are sure you want to enroll for this course?</p>
+                                            <?php $cohorts = ['Jan-March', 'April-June', 'July-September', 'October-December']; ?>
+                                            <div class="row">
+                                                <label for="cohort" class="col-md-4 col-form-label text-md-end">{{ __('Cohort') }}</label>
+                                                <div class="col-md-8">
+                                                    <select name="cohort" id="" class="form-control" required>
+                                                        <option value="" selected disabled>Select your cohort</option>
+                                                        @foreach($cohorts as $cohort)
+                                                        <option value="{{$cohort}}">{{$cohort}}</option>
+                                                        @endforeach
+                                                    </select>
 
-                                                @error('cohort')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
+                                                    @error('cohort')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-                                        <button type="submit" class="btn btn-success">Yes</button>
-                                    </div>
-                                </form>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                                            <button type="submit" class="btn btn-success">Yes</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
+                        @if(Auth()->user()->role!=Admin')
+                        <a href="/mycourses"><button class="btn btn-primary">Check Enrollments</button></a>
+                        @endif
                     </div>
-                    @else
-                    <a href="/mycourses"><button class="btn btn-primary">Check Enrollments</button></a>
-                    @endif
                 </div>
             </div>
             @endforeach
