@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if(Auth()->user()->role!=Admin')
+                        @if(Auth()->user()->role!='Admin')
                         <a href="/mycourses"><button class="btn btn-primary">Check Enrollments</button></a>
                         @endif
                     </div>
