@@ -72,7 +72,7 @@
                                 <span class="hide-menu">Fees</span>
                             </a>
                         </li>
-                        @if(Auth()->users()->role=='Admin')
+                        @if(Auth()->user()->role=='Admin')
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/enrolls" aria-expanded="false">
                                 <i class="fa fa-table" aria-hidden="true"></i>
