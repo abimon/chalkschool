@@ -63,14 +63,15 @@ class StudentController extends Controller
         ];
         return view('courses', $data);
     }
-public function view($id){
-    $courses = Student::where('course_code',$id)->join('users', 'users.id', '=', 'students.user_id')->join('courses', 'courses.unit_code', '=', 'students.course_code')
-        ->select('users.name', 'users.contact', 'users.email', 'users.residence', 'students.fee', 'students.paid', 'students.course_code', 'students.cohort', 'students.created_at', 'students.updated_at', 'courses.title', 'courses.duration', 'courses.category', 'students.id')->get();
-    $data = [
-        'items' => $courses
-    ];
-    return view('courses', $data);
-}
+    public function view($id)
+    {
+        $courses = Student::where('course_code', $id)->join('users', 'users.id', '=', 'students.user_id')->join('courses', 'courses.unit_code', '=', 'students.course_code')
+            ->select('users.name', 'users.contact', 'users.email', 'users.residence', 'students.fee', 'students.paid', 'students.course_code', 'students.cohort', 'students.created_at', 'students.updated_at', 'courses.title', 'courses.duration', 'courses.category', 'students.id')->get();
+        $data = [
+            'items' => $courses
+        ];
+        return view('courses', $data);
+    }
     public function show()
     {
         $fees = [];
