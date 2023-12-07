@@ -133,7 +133,7 @@
                             </div>
                         </div>
                         @if(Auth()->user()->role=='Admin')
-                        <a href="/enrolls"><button class="btn btn-success">Check Enrollments</button></a>
+                        <a href="/enrolls/{{$course->unit_code}}"><button class="btn btn-success">Check Enrollments</button></a>
                         @endif
                     </div>
                 </div>

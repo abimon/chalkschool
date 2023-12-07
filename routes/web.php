@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function (){
     Route::controller(StudentController::class)->group(function(){
         Route::get('/mycourses','index');
         Route::get('/enrolls','store')->middleware('isAdmin');
+        Route::get('/enrolls/{{id}}','view')->middleware('isAdmin');
         Route::get('/fees','show');
         Route::post('/student/pay/{code}','Pay');
         Route::get('/pay/{id}','update');
